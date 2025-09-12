@@ -1,3 +1,5 @@
 flask
 PyMySQL[rsa]
 flask-sqlalchemy
+pytest
+pytest-cov

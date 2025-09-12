@@ -3,9 +3,25 @@ pipeline {
     stages {
       stage('Checkout') {
         steps {
-          echo 'Pulling code from remote repo'
-          checkout scm
-          echo 'Code checkout complete!'
+          echo 'Fazendo checkout'
+        }
+      }
+
+      stage('Construcao') {
+        steps {
+          echo 'Fazendo build'
+        }
+      }
+
+      stage('Entrega') {
+        steps {
+          echo 'Fazendo delivery'
+        }
+      }
+
+      stage('Cleanup') {
+        steps {
+          echo 'Fazendo cleanup'
         }
       }
     }

@@ -1,28 +1,28 @@
 pipeline {
-  agent any {
-    stages {
-      stage('Checkout') {
-        steps {
-          echo 'Fazendo checkout'
-        }
-      }
+  agent any
 
-      stage('Construcao') {
-        steps {
-          echo 'Fazendo build'
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        echo 'Fazendo checkout'
       }
+    }
 
-      stage('Entrega') {
-        steps {
-          echo 'Fazendo delivery'
-        }
+    stage('Construcao') {
+      steps {
+        echo 'Fazendo build'
       }
+    }
 
-      stage('Cleanup') {
-        steps {
-          echo 'Fazendo cleanup'
-        }
+    stage('Entrega') {
+      steps {
+        echo 'Fazendo delivery'
+      }
+    }
+
+    stage('Cleanup') {
+      steps {
+        echo 'Fazendo cleanup'
       }
     }
   }

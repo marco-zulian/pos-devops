@@ -15,13 +15,13 @@ pipeline {
           sh 'source venv/bin/activate && pytest'
 
           script {
-            docker.build('${WEB_DOCKER_IMAGE}', '-f Dockerfile.web')
+            docker.build("${WEB_DOCKER_IMAGE}", '-f Dockerfile.web')
           }
         }
 
         dir('db') {
           script {
-            docker.build('${DB_DOCKER_IMAGE}', '-f Dockerfile.mysql')
+            docker.build("${DB_DOCKER_IMAGE}", '-f Dockerfile.mysql')
           }
         }
       }

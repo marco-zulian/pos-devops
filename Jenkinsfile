@@ -7,7 +7,7 @@ pipeline {
   }
 
   stages {
-    stage('Construcao Web') {
+    stage('Construcao') {
       steps {
         dir('web') {
           sh 'python3 -m venv venv' 
@@ -15,11 +15,7 @@ pipeline {
           sh 'source venv/bin/activate && pytest'
           sh "/usr/local/bin/docker buildx build -f Dockerfile.web -t ${WEB_DOCKER_IMAGE} ."
         }
-      }
-    }
 
-    stage('Construcao DB') {
-      steps {
         dir('db') {
           sh "/usr/local/bin/docker buildx build -f Dockerfile.mysql -t ${DB_DOCKER_IMAGE} ."
         }
@@ -31,16 +27,20 @@ pipeline {
         dir('web') {
           script {
               withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                  sh "echo \"$DOCKER_PASSWORD\" | /usr/local/bin/docker login -u \"$DOCKER_USERNAME\" --password-stdin && /usr/local/bin/docker push ${WEB_DOCKER_IMAGE}"
+                sh '''
+                  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  && /usr/local/bin/docker push "$WEB_DOCKER_IMAGE"
+                '''
               }
           }
         }
 
         dir('db') {
           script {
-              withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                  sh "echo \"$DOCKER_PASSWORD\" | /usr/local/bin/docker login -u \"$DOCKER_USERNAME\" --password-stdin && /usr/local/bin/docker push ${DB_DOCKER_IMAGE}"
-              }
+            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh '''
+                  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin  && /usr/local/bin/docker push "$DB_DOCKER_IMAGE"
+                '''
+            }
           }
         }
       }

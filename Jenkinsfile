@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DB_DOCKER_IMAGE = "marcoz/trab-devops-db:${env.BUILD_NUMBER}"
-    WEB_DOCKER_IMAGE = "marcoz/trab-devops-web:${env.BUILD_NUMBER}"
+    DB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:db-${env.BUILD_NUMBER}"
+    WEB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:web-${env.BUILD_NUMBER}"
   }
 
   stages {

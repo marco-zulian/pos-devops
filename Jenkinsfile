@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    docker 'Docker-Mac'
+    dockerTool 'Docker-Mac'
   }
 
   environment {
@@ -35,11 +35,9 @@ pipeline {
         dir('web') {
           script {
               withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                  sh "echo \"$DOCKER_PASSWORD\" | docker login -u \"$DOCKER_USERNAME\" --password-stdin"
+                  sh "echo \"$DOCKER_PASSWORD\" | docker login -u \"$DOCKER_USERNAME\" --password-stdin && docker push ${WEB_DOCKER_IMAGE}"
               }
           }
-          
-          sh "docker push ${WEB_DOCKER_IMAGE}"
         }
       }
     }

@@ -13,11 +13,16 @@ pipeline {
           sh 'python3 -m venv venv' 
           sh 'source venv/bin/activate && pip install -r requirements.txt'
           sh 'source venv/bin/activate && pytest'
-          docker.build('${WEB_DOCKER_IMAGE}', '-f Dockerfile.web')
+
+          script {
+            docker.build('${WEB_DOCKER_IMAGE}', '-f Dockerfile.web')
+          }
         }
 
         dir('db') {
-          docker.build('${DB_DOCKER_IMAGE}', '-f Dockerfile.mysql')
+          script {
+            docker.build('${DB_DOCKER_IMAGE}', '-f Dockerfile.mysql')
+          }
         }
       }
     }

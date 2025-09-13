@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:db-${env.BUILD_NUMBER}"
-    WEB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:web-${env.BUILD_NUMBER}"
+    DB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:db-latest"
+    WEB_DOCKER_IMAGE = "codebymarco/trab-pos-devops:web-latest"
   }
 
   stages {
@@ -45,11 +45,18 @@ pipeline {
         }
       }
     }
+  }
 
-    stage('Cleanup') {
-      steps {
-        echo 'Fazendo cleanup'
+  post {
+    always {
+      dir('web') {
+        sh 'rm -rf venv'
       }
+      
+      sh "/usr/local/bin/docker rmi -f ${WEB_DOCKER_IMAGE} || true"
+      sh "/usr/local/bin/docker rmi -f ${DB_DOCKER_IMAGE} || true"
+
+      sh '/usr/local/bin/docker logout'
     }
   }
 }

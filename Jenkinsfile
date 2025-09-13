@@ -35,6 +35,14 @@ pipeline {
               }
           }
         }
+
+        dir('db') {
+          script {
+              withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                  sh "echo \"$DOCKER_PASSWORD\" | /usr/local/bin/docker login -u \"$DOCKER_USERNAME\" --password-stdin && /usr/local/bin/docker push ${DB_DOCKER_IMAGE}"
+              }
+          }
+        }
       }
     }
 

@@ -11,7 +11,7 @@ pipeline {
       steps {
         dir('web') {
           sh 'python3 -m venv venv' 
-          sh 'set +x && source venv/bin/activate && set -x && pip install -r requirements.txt && pytest'
+          sh 'set +x && source venv/bin/activate && pip install -r requirements.txt && set -x && pytest'
           sh "/usr/local/bin/docker buildx build -f Dockerfile.web -t ${WEB_DOCKER_IMAGE} ."
         }
 
